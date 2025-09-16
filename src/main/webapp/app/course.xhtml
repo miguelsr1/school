@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="cursoId" value="#{cursoDetalleView.cursoId}" required="true" />
+        <f:viewParam name="leccionId" value="#{cursoDetalleView.leccionActualId}" required="true" />
+        <f:event type="preRenderView" listener="#{cursoDetalleView.loadCourseDetails}" />
+    </f:metadata>
+
+    <ui:define name="title">#{cursoDetalleView.curso.nombre} - E-School</ui:define>
+
+    <ui:define name="head">
+        <style>
+            body .ui-orderlist .ui-orderlist-list {
+                width: auto;
+                height: auto;
+            }
+
+            .py-0\.5 {
+                padding-top: .125rem;
+                padding-bottom: .125rem;
+            }
+            .px-2\.5 {
+                padding-left: .625rem;
+                padding-right: .625rem;
+            }
+
+            .card-leccion{
+                border: 2px dashed #dee2e6;
+                border-radius: 8px;
+                background-color: #f8f9fa;
+            }
+            .bg-green-100 {
+                --tw-bg-opacity: 1;
+                background-color: rgb(220 252 231 / var(--tw-bg-opacity, 1));
+            }
+            .border-yellow-200 {
+                --tw-border-opacity: 1;
+                border-color: rgb(254 240 138 / var(--tw-border-opacity, 1));
+            }
+            .font-semibold {
+                font-weight: 600;
+            }
+            .rounded-full {
+                border-radius: 9999px;
+            }
+            .text-xs {
+                font-size: .75rem;
+                line-height: 1rem;
+            }
+            .gap-3 {
+                gap: .75rem;
+            }
+            .items-center {
+                align-items: center;
+            }
+            .ui-dataview-list .ui-dataview-row {
+                padding-bottom: 1rem;
+            }
+            .bg-card {
+                background-color: hsl(var(--card));
+            }
+
+            body .ui-dataview .ui-dataview-header {
+                background: transparent;
+                border: none;
+                border-width: 0;
+                padding: 0 !important
+            }
+            body .ui-dataview .ui-dataview-content {
+                background: transparent;
+            }
+            body .ui-button.ui-button-success.ui-button-outlined, body .ui-splitbutton.ui-button-success > .ui-button.ui-button-outlined, body .ui-menubutton.ui-button-success > .ui-button.ui-button-outlined {
+                background-color: white !important;
+            }
+        </style>
+        <script>
+            function seleccionarCard(card) {
+                // 1. Quitar el fondo blanco de todos los div con clase "card"
+                document.querySelectorAll('.card').forEach(c => {
+                    c.classList.remove('bg-white');
+                    c.classList.add('bg-green-50');
+                });
+
+                // 2. Poner en blanco solo el que se clickeó
+                card.classList.remove('bg-green-50');
+                card.classList.add('bg-white');
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="grid p-4" style="margin-top: 2rem"> 
+            <div class="col-12 md:col-5" style="padding: 2rem">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Contenido del Curso</h2>
+
+                <p:dataView value="#{cursoDetalleView.curso.lecciones}" var="leccion"  layout="list"
+                            style="width: 100%" rows="4">
+                    <p:dataViewListItem>
+                        <div class="card text-card-foreground cursor-pointer #{leccion.completada ? 'border-green-200 bg-green-50': 'border-yellow-200 bg-yellow-50'} "
+                             style="border-style: solid; border-width: 1px;"
+                             onclick="seleccionarCard(this)">
+                            <div class="card-header">
+                                <p class="text-xl">
+                                    <i class="pi pi-clock text-xl mr-3 #{leccion.completada ? 'text-green-600':'text-yellow-600'}"></i>
+                                    #{leccion.titulo}
+                                </p>
+                            </div>
+
+                            <div class="card-body grid">
+                                <div class="col-9">
+                                    <p>#{leccion.descripcion}</p>
+                                </div>
+                                <div class="col-3">
+                                    <p:commandButton value="Revisar" icon="pi pi-play" style="float: right" class="ui-button-outlined ui-button-success"/>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <div class="rounded-full items-center font-semibold py-1 px-3 mr-3 #{leccion.completada ? 'bg-green-100 text-green-800': 'bg-yellow-100 text-yellow-800'} " style="width: 82px">
+                                    #{leccion.completada ? 'finalizada':'pendiente'}                                    
+                                </div>
+                                <span class="text-xs text-gray-500 flex items-center gap-1"><i class="pi pi-clock" />45 min</span>
+                            </div>
+                        </div>
+                    </p:dataViewListItem>
+                </p:dataView>
+
+            </div>
+            <div class="card col-12 md:col-7 bg-white-alpha-90 " style="box-sizing: border-box; border-style: solid; border-width: 1px; border-color: #e5e7eb">
+                <p class="text-xl">#{leccion.titulo}</p>
+                <h4 class="p-mt-3">Descripción:</h4>
+                <p>#{cursoDetalleView.leccionActual.descripcion}</p>
+                <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000;">
+                    <iframe src="#{cursoDetalleView.leccionActual.videoUrl}"
+                            frameborder="0" allowfullscreen=""
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                    </iframe>
+                </div>
+
+
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

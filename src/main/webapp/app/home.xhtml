@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">CRUD</ui:define>
+
+    <ui:define name="head">
+        <style>
+            body .ui-progressbar .ui-progressbar-label {
+                margin-top: 2rem !important;
+                font-size: 1.3rem;
+            }
+            .ui-progressbar-determinate .ui-progressbar-label {
+                text-align: left;
+            }
+            .ui-card-footer{
+                text-align: center !important;
+            }
+            .ui-card {
+                text-align: center !important;
+            }
+
+            
+
+            body .ui-datagrid .ui-datagrid-content {
+                border: 0px solid !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="p-grid p-jc-center p-mt-4">
+            <div class="grid grid-nogutter surface-section text-800 mb-6">
+                <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
+                    <section>
+                        <span class="block text-6xl font-bold mb-1">¡Aprende a tu ritmo!</span>
+                        <div class="text-4xl text-primary font-bold mb-3">Explora miles de cursos y desarrolla nuevas habilidades</div>
+
+                        <h:form>
+                            <div class="search-container">
+                                <p:inputText id="searchInput" value="#{courseBean.searchTerm}" placeholder="Buscar cursos..."/>
+                                <p:commandButton value="Buscar" action="#{courseBean.searchCourses}" update="@form"/>
+                            </div>
+                        </h:form>
+                    </section>
+                </div>
+                <div class="col-12 md:col-6 overflow-hidden">
+                    <p:graphicImage name="courses.webp" library="images" alt="Image"
+                                    styleClass="md:ml-auto block md:h-full"
+                                    style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)"/>
+                </div>
+            </div>
+
+            <div class="p-col-12 p-md-10 p-lg-8">
+                <h1 class="p-mb-4">Mis Cursos</h1>
+
+                <p:tabView activeIndex="#{dashboardEstudianteView.activeIndex}">
+                    <p:tab title="En Progreso">
+                        <p:dataGrid var="curso" value="#{dashboardEstudianteView.cursosEnProgreso}" 
+                                    columns="3" layout="grid" emptyMessage="No tienes cursos en progreso.">
+                            <p:card style="width: 20em; margin-bottom: 2em; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto;">
+                                <f:facet name="header">
+                                    <h:graphicImage name="a1.png" library="images" style="width:40%;text-align: center;" />
+                                </f:facet>
+                                <f:facet name="title">#{curso.nombre}</f:facet>
+                                <f:facet name="subtitle">#{curso.descripcionCorta}</f:facet>
+                                <p:progressBar value="#{curso.progreso}" labelTemplate="{value}% Completo" displayOnly="true" styleClass="p-mb-3"/>
+                                <f:facet name="footer" class="footer-center" >
+                                    <p:commandButton value="Continuar Curso" icon="pi pi-play" style="margin-top: 2rem;"
+                                                     action="#{dashboardEstudianteView.continuarCurso(curso.id)}"
+                                                     styleClass="p-button-info p-d-block p-w-100 rounded-button ui-button-outlined" />
+                                </f:facet>
+                            </p:card>
+                        </p:dataGrid>
+                    </p:tab>
+
+                    <p:tab title="Finalizados">
+                        <p:dataGrid var="curso" value="#{dashboardEstudianteView.cursosFinalizados}"
+                                    columns="3" layout="grid" emptyMessage="No has finalizado ningún curso.">
+                            <p:card style="width: 20em; margin-bottom: 2em; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                <f:facet name="header">
+                                    <h:graphicImage url="#{curso.imagenUrl}" style="width:100%; height: 120px; object-fit: cover;" />
+                                </f:facet>
+                                <f:facet name="title">#{curso.nombre}</f:facet>
+                                <f:facet name="subtitle">#{curso.descripcionCorta}</f:facet>
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Ver Certificado" icon="pi pi-file-pdf"
+                                                     action="#{dashboardEstudianteView.verCertificado(curso.id)}"
+                                                     styleClass="p-button-secondary p-d-block p-w-100" />
+                                </f:facet>
+                            </p:card>
+                        </p:dataGrid>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
