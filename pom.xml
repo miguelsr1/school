@@ -5,7 +5,7 @@
     <artifactId>school</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>school-1.0</name>
+    <name>school</name>
     
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

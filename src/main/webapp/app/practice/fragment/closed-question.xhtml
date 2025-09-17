@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <div class="col-12" style="text-align: center">
+        <p:outputLabel class="text-5xl">¿Cómo se dice "hola" en inglés?</p:outputLabel>
+    </div>
+    <div class="col-12 mb-5" style="text-align: left">
+        <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
+    </div>
+    <div class="col-12">
+        <div class="container-match grid">
+            <div class="col-12 md:col-6 mb-2" style="text-align: center">
+                <p:commandButton value="Respuesta 1" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
+            </div>
+            <div class="col-12 md:col-6 mb-2" style="text-align: center">
+                <p:commandButton value="Respuesta 2" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
+            </div>
+            <div class="col-12 md:col-6 mb-2" style="text-align: center">
+                <p:commandButton value="Respuesta 3" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
+            </div>
+            <div class="col-12 md:col-6 mb-2" style="text-align: center">
+                <p:commandButton value="Respuesta 4" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
+            </div>
+        </div>
+    </div>
+</ui:composition>

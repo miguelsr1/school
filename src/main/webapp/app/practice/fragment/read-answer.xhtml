@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <div class="col-12 mt-3" style="text-align: center">
+        <p:outputLabel class="text-5xl">¿Cómo se dice "hola" en inglés?</p:outputLabel>
+    </div>
+    <div class="col-12 mb-5" style="text-align: left">
+        <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
+    </div>
+    <div class="col-12">
+        <div class="container-read-answer">
+            <h1>¡Aprende Vocabulario!</h1>
+
+            <h:form id="vocabularioForm">
+                <h:panelGroup rendered="#{vocabularioBean.juegoTerminado}" layout="block" styleClass="game-over-message">
+                    <h:outputText value="#{vocabularioBean.mensaje}" />
+                    <h:commandButton value="Reiniciar Juego" action="#{vocabularioBean.inicializarPreguntas}" styleClass="start-button">
+                        <f:ajax execute="@form" render="@form" />
+                    </h:commandButton>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{!vocabularioBean.juegoTerminado}">
+                    <div class="sentence-display">
+                        <h:outputText value="#{vocabularioBean.preguntaActual.oracionConResaltado}" escape="false" />
+                    </div>
+
+                    <div class="options-grid">
+                        <ui:repeat value="#{vocabularioBean.preguntaActual.opciones}" var="opcion">
+                            <h:commandButton value="#{opcion}"
+                                             action="#{vocabularioBean.seleccionarOpcion(opcion)}"
+                                             styleClass="option-button"
+                                             disabled="#{vocabularioBean.preguntaRespondida}">
+                                <f:ajax execute="@form" render="@form" />
+                            </h:commandButton>
+                        </ui:repeat>
+                    </div>
+
+                    <h:panelGroup layout="block" styleClass="feedback-message #{vocabularioBean.respuestaCorrecta ? 'feedback-correct' : 'feedback-incorrect'}">
+                        <h:outputText value="#{vocabularioBean.mensaje}" />
+                    </h:panelGroup>
+
+                    <h:commandButton value="Siguiente Pregunta" action="#{vocabularioBean.cargarSiguientePregunta}" styleClass="next-button"
+                                     rendered="#{vocabularioBean.preguntaRespondida}">
+                        <f:ajax execute="@form" render="@form" />
+                    </h:commandButton>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </div>
+</ui:composition>

@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:define name="head">
+        <style>
+            body .ui-progressbar .ui-progressbar-value {
+                background: rgb(254 240 138 / var(--tw-border-opacity, 1));
+            }
+            body .ui-progressbar .ui-progressbar-label {
+                top: -1.5rem !important;
+            }
+            .buttonV3, .ui-menubutton .ui-button {
+                border-radius: 21px !important;
+                height: 60px !important;
+                font-size: 16px !important;
+                font-weight: 600 !important;
+                vertical-align: bottom;
+                max-width: 357.3px;
+                width: 100%;
+            }
+
+            .btnNext {
+                border-radius: 21px !important;
+                height: 45px !important;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                vertical-align: bottom;
+                background: #edf6f1 !important;
+                color: #8d95a8 !important;
+                border-color: #edf6f1 !important;
+            }
+        </style>
+        
+        <h:outputStylesheet name="css/primeflex.min.css" library="paradise-layout"/>
+        <h:outputStylesheet name="match.css" library="css"/>
+        <h:outputStylesheet name="read-answer.css" library="css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <div style="max-width: 1024px; margin: 0 auto;">
+            <h:form prependId="false">
+                <div class="grid">
+                    <div class="col-12">
+                        <p:outputLabel>Lección 1 - Terminos generales</p:outputLabel>
+                    </div>
+                    <div class="col-12">
+                        <p:progressBar id="progressBarClient" widgetVar="pbClient" styleClass="mt-5" value="55" labelTemplate="Prueba de avance {value}%"/>
+                    </div>
+
+                    <div jsf:id="dvContent" class="grid">
+                        <ui:include src="#{practiceView.step}"/>
+                    </div>
+
+                    <div class="col-12" style="text-align: left">
+                        <p:commandButton value="Siguiente" 
+                                         action="#{practiceView.nextStep()}"
+                                         update="dvContent"
+                                         class="btnNext" icon="pi pi-arrow-right" 
+                                         style="float: right;"/>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

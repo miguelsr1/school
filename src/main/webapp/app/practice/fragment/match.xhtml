@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    
+    <div class="col-12 mt-3" style="text-align: center">
+        <p:outputLabel class="text-5xl">Selecciona los pares correctos</p:outputLabel>
+    </div>
+    <div class="col-12 mb-3" style="text-align: left">
+        <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
+    </div>
+    <div class="col-12">
+        <div class="container-match">
+            <div class="game-area">
+                <div class="column">
+                    <p>Español</p>
+                    <ui:repeat value="#{duolingoBean.palabrasIzquierda}" var="palabra">
+                        <h:commandButton value="#{palabra}"
+                                         action="#{duolingoBean.seleccionarIzquierda(palabra)}"
+                                         styleClass="button-word #{duolingoBean.seleccionIzquierda eq palabra ? 'selected' : ''}"
+                                         disabled="#{duolingoBean.isBotonIzquierdaDeshabilitado(palabra)}">
+                            <f:ajax execute="@form" render="@form" />
+                        </h:commandButton>
+                    </ui:repeat>
+                </div>
+
+                <div class="column">
+                    <p>Inglés</p>
+                    <ui:repeat value="#{duolingoBean.palabrasDerecha}" var="palabra">
+                        <h:commandButton value="#{palabra}"
+                                         action="#{duolingoBean.seleccionarDerecha(palabra)}"
+                                         styleClass="button-word #{duolingoBean.seleccionDerecha eq palabra ? 'selected' : ''}"
+                                         disabled="#{duolingoBean.isBotonDerechaDeshabilitado(palabra)}">
+                            <f:ajax execute="@form" render="@form" />
+                        </h:commandButton>
+                    </ui:repeat>
+                </div>
+            </div>
+
+            <h:panelGroup layout="block" styleClass="message">
+                <h:outputText value="#{duolingoBean.mensaje}" />
+            </h:panelGroup>
+
+        </div>
+    </div>
+</ui:composition>
