@@ -132,35 +132,35 @@
             <h1>¡Aprende Vocabulario!</h1>
 
             <h:form id="vocabularioForm">
-                <h:panelGroup rendered="#{vocabularioBean.juegoTerminado}" layout="block" styleClass="game-over-message">
-                    <h:outputText value="#{vocabularioBean.mensaje}" />
-                    <h:commandButton value="Reiniciar Juego" action="#{vocabularioBean.inicializarPreguntas}" styleClass="start-button">
+                <h:panelGroup rendered="#{readAnswerView.juegoTerminado}" layout="block" styleClass="game-over-message">
+                    <h:outputText value="#{readAnswerView.mensaje}" />
+                    <h:commandButton value="Reiniciar Juego" action="#{readAnswerView.inicializarPreguntas}" styleClass="start-button">
                         <f:ajax execute="@form" render="@form" />
                     </h:commandButton>
                 </h:panelGroup>
 
-                <h:panelGroup rendered="#{!vocabularioBean.juegoTerminado}">
+                <h:panelGroup rendered="#{!readAnswerView.juegoTerminado}">
                     <div class="sentence-display">
-                        <h:outputText value="#{vocabularioBean.preguntaActual.oracionConResaltado}" escape="false" />
+                        <h:outputText value="#{readAnswerView.preguntaActual.oracionConResaltado}" escape="false" />
                     </div>
 
                     <div class="options-grid">
-                        <ui:repeat value="#{vocabularioBean.preguntaActual.opciones}" var="opcion">
+                        <ui:repeat value="#{readAnswerView.preguntaActual.opciones}" var="opcion">
                             <h:commandButton value="#{opcion}"
-                                             action="#{vocabularioBean.seleccionarOpcion(opcion)}"
+                                             action="#{readAnswerView.seleccionarOpcion(opcion)}"
                                              styleClass="option-button"
-                                             disabled="#{vocabularioBean.preguntaRespondida}">
+                                             disabled="#{readAnswerView.preguntaRespondida}">
                                 <f:ajax execute="@form" render="@form" />
                             </h:commandButton>
                         </ui:repeat>
                     </div>
 
-                    <h:panelGroup layout="block" styleClass="feedback-message #{vocabularioBean.respuestaCorrecta ? 'feedback-correct' : 'feedback-incorrect'}">
-                        <h:outputText value="#{vocabularioBean.mensaje}" />
+                    <h:panelGroup layout="block" styleClass="feedback-message #{readAnswerView.respuestaCorrecta ? 'feedback-correct' : 'feedback-incorrect'}">
+                        <h:outputText value="#{readAnswerView.mensaje}" />
                     </h:panelGroup>
 
-                    <h:commandButton value="Siguiente Pregunta" action="#{vocabularioBean.cargarSiguientePregunta}" styleClass="next-button"
-                                     rendered="#{vocabularioBean.preguntaRespondida}">
+                    <h:commandButton value="Siguiente Pregunta" action="#{readAnswerView.cargarSiguientePregunta}" styleClass="next-button"
+                                     rendered="#{readAnswerView.preguntaRespondida}">
                         <f:ajax execute="@form" render="@form" />
                     </h:commandButton>
                 </h:panelGroup>

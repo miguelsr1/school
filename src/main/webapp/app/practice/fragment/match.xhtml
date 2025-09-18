@@ -6,45 +6,49 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
-    
+
     <div class="col-12 mt-3" style="text-align: center">
         <p:outputLabel class="text-5xl">Selecciona los pares correctos</p:outputLabel>
     </div>
-    <div class="col-12 mb-3" style="text-align: left">
-        <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
-    </div>
     <div class="col-12">
         <div class="container-match">
-            <div class="game-area">
+            <div class="game-area" jsf:id="dvMatch">
                 <div class="column">
                     <p>Español</p>
-                    <ui:repeat value="#{duolingoBean.palabrasIzquierda}" var="palabra">
-                        <h:commandButton value="#{palabra}"
-                                         action="#{duolingoBean.seleccionarIzquierda(palabra)}"
-                                         styleClass="button-word #{duolingoBean.seleccionIzquierda eq palabra ? 'selected' : ''}"
-                                         disabled="#{duolingoBean.isBotonIzquierdaDeshabilitado(palabra)}">
-                            <f:ajax execute="@form" render="@form" />
-                        </h:commandButton>
+                    <ui:repeat value="#{matchView.palabrasIzquierda}" var="palabra">
+                        <p:commandButton value="#{palabra}"
+                                         update="dvMatch txtMatchMsj"
+                                         action="#{matchView.seleccionarIzquierda(palabra)}"
+                                         style="height: 2.5rem"
+                                         styleClass="button-word #{matchView.seleccionIzquierda eq palabra ? 'selected' : ''} ui-button-outlined"
+                                         disabled="#{matchView.isBotonIzquierdaDeshabilitado(palabra)}" />
                     </ui:repeat>
                 </div>
 
                 <div class="column">
                     <p>Inglés</p>
-                    <ui:repeat value="#{duolingoBean.palabrasDerecha}" var="palabra">
-                        <h:commandButton value="#{palabra}"
-                                         action="#{duolingoBean.seleccionarDerecha(palabra)}"
-                                         styleClass="button-word #{duolingoBean.seleccionDerecha eq palabra ? 'selected' : ''}"
-                                         disabled="#{duolingoBean.isBotonDerechaDeshabilitado(palabra)}">
-                            <f:ajax execute="@form" render="@form" />
-                        </h:commandButton>
+                    <ui:repeat value="#{matchView.palabrasDerecha}" var="palabra">
+                        <p:commandButton value="#{palabra}"
+                                         update="dvMatch txtMatchMsj"
+                                         action="#{matchView.seleccionarDerecha(palabra)}"
+                                         style="height: 2.5rem"
+                                         styleClass="button-word #{matchView.seleccionDerecha eq palabra ? 'selected' : ''} ui-button-outlined"
+                                         disabled="#{matchView.isBotonDerechaDeshabilitado(palabra)}"/>
                     </ui:repeat>
                 </div>
             </div>
 
-            <h:panelGroup layout="block" styleClass="message">
-                <h:outputText value="#{duolingoBean.mensaje}" />
+            <h:panelGroup id="txtMatchMsj" layout="block" styleClass="message">
+                <h:outputText value="#{matchView.mensaje}" escape="false" />
             </h:panelGroup>
-
         </div>
+    </div>
+    
+    <div class="col-12" style="text-align: left">
+        <p:commandButton id="btnNext" value="Siguiente" 
+                         action="#{matchView.siguiente()}"
+                         update="dvContent growl dvTituloEvaluacion"
+                         class="btnNext" icon="pi pi-arrow-right" 
+                         style="float: right;"/>
     </div>
 </ui:composition>

@@ -7,3 +7,51 @@
     animation: fadeIn 0.8s ease-out;
     margin: 0 auto;
 }
+
+.quiz-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.pregunta {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.opciones-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.boton-opcion {
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.correcta {
+    background-color: #d4edda !important;
+    border-color: #28a745 !important;
+    color: #155724 !important;
+}
+
+.incorrecta {
+    background-color: #f8d7da !important;
+    border-color: #dc3545 !important;
+    color: #721c24 !important;
+}
+
+.mensaje {
+    font-size: 20px;
+    margin-top: 25px;
+}

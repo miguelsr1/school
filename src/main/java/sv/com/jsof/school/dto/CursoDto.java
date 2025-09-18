@@ -13,9 +13,9 @@ import lombok.Data;
 public class CursoDto implements Serializable {
 
     private Long id;
-    private String nombre;
-    private String descripcionCorta;
-    private int progreso; // Porcentaje de avance
-    private String imagenUrl;
+    private String nombreCurso;
+    private String descripcionCurso;
+    private int idNivel;
+    private String imagen;
 
 }

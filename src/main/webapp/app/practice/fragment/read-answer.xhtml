@@ -6,50 +6,43 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
+
     <div class="col-12 mt-3" style="text-align: center">
-        <p:outputLabel class="text-5xl">¿Cómo se dice "hola" en inglés?</p:outputLabel>
-    </div>
-    <div class="col-12 mb-5" style="text-align: left">
-        <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
+        <p:outputLabel class="text-5xl">Lee y responde</p:outputLabel>
     </div>
     <div class="col-12">
         <div class="container-read-answer">
-            <h1>¡Aprende Vocabulario!</h1>
+            <h:panelGroup rendered="#{!readAnswerView.juegoTerminado}">
+                <div class="sentence-display">
+                    <p:commandButton icon="pi pi-megaphone" styleClass="rounded-button mr-2 bg-blue-300" />
+                    <h:outputText value="#{readAnswerView.preguntaActual.oracionConResaltado}" escape="false" />
+                </div>
+                
+                <div style="text-align: left" class="mb-5">
+                    <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
+                </div>
 
-            <h:form id="vocabularioForm">
-                <h:panelGroup rendered="#{vocabularioBean.juegoTerminado}" layout="block" styleClass="game-over-message">
-                    <h:outputText value="#{vocabularioBean.mensaje}" />
-                    <h:commandButton value="Reiniciar Juego" action="#{vocabularioBean.inicializarPreguntas}" styleClass="start-button">
-                        <f:ajax execute="@form" render="@form" />
-                    </h:commandButton>
-                </h:panelGroup>
+                <div class="options-grid" jsf:id="dvOpciones">
+                    <ui:repeat value="#{readAnswerView.preguntaActual.opciones}" var="opcion">
+                        <p:commandButton value="#{opcion}"
+                                         style="height: 4rem"
+                                         action="#{readAnswerView.seleccionarOpcion(opcion)}"
+                                         styleClass="rounded-button ui-button-success ui-button-outlined"
+                                         disabled="#{readAnswerView.preguntaRespondida}" update="dvOpciones growl btnNext">
 
-                <h:panelGroup rendered="#{!vocabularioBean.juegoTerminado}">
-                    <div class="sentence-display">
-                        <h:outputText value="#{vocabularioBean.preguntaActual.oracionConResaltado}" escape="false" />
-                    </div>
-
-                    <div class="options-grid">
-                        <ui:repeat value="#{vocabularioBean.preguntaActual.opciones}" var="opcion">
-                            <h:commandButton value="#{opcion}"
-                                             action="#{vocabularioBean.seleccionarOpcion(opcion)}"
-                                             styleClass="option-button"
-                                             disabled="#{vocabularioBean.preguntaRespondida}">
-                                <f:ajax execute="@form" render="@form" />
-                            </h:commandButton>
-                        </ui:repeat>
-                    </div>
-
-                    <h:panelGroup layout="block" styleClass="feedback-message #{vocabularioBean.respuestaCorrecta ? 'feedback-correct' : 'feedback-incorrect'}">
-                        <h:outputText value="#{vocabularioBean.mensaje}" />
-                    </h:panelGroup>
-
-                    <h:commandButton value="Siguiente Pregunta" action="#{vocabularioBean.cargarSiguientePregunta}" styleClass="next-button"
-                                     rendered="#{vocabularioBean.preguntaRespondida}">
-                        <f:ajax execute="@form" render="@form" />
-                    </h:commandButton>
-                </h:panelGroup>
-            </h:form>
+                        </p:commandButton>
+                    </ui:repeat>
+                </div>
+            </h:panelGroup>
         </div>
+    </div>
+
+    <div class="col-12" style="text-align: left">
+        <p:commandButton id="btnNext" value="Siguiente" 
+                         disabled="#{not readAnswerView.preguntaRespondida}"
+                         action="#{readAnswerView.siguiente()}"
+                         update="dvContent growl dvTituloEvaluacion"
+                         class="btnNext" icon="pi pi-arrow-right" 
+                         style="float: right;"/>
     </div>
 </ui:composition>

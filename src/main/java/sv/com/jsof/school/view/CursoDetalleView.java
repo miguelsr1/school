@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -21,7 +20,7 @@ import sv.com.jsof.school.dto.LeccionDto;
 public class CursoDetalleView implements Serializable {
 
     private Long cursoId = 1l;
-    private Long leccionActualId =1l;
+    private Long leccionActualId = 1l;
     private CursoDetalleDto curso; // DTO más completo para el detalle del curso
     private LeccionDto leccionActual;
 
@@ -49,11 +48,6 @@ public class CursoDetalleView implements Serializable {
 
     public LeccionDto getLeccionActual() {
         return leccionActual;
-    }
-
-    @PostConstruct
-    public void init() {
-        // Inicialización, si es necesario, antes de cargar los detalles por viewParam
     }
 
     public void loadCourseDetails() {

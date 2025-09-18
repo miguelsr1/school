@@ -33,34 +33,49 @@
                 color: #8d95a8 !important;
                 border-color: #edf6f1 !important;
             }
+
+            .ui-growl {
+                position: fixed;
+                top: 40% !important;
+                left: 50% !important;
+                right: 0 !important;
+                width: 301px;
+                transform: translate(-50%, -50%) !important;
+            }
+
         </style>
-        
+
         <h:outputStylesheet name="css/primeflex.min.css" library="paradise-layout"/>
         <h:outputStylesheet name="match.css" library="css"/>
         <h:outputStylesheet name="read-answer.css" library="css"/>
+        <h:outputStylesheet name="closed-question.css" library="css"/>
     </ui:define>
 
     <ui:define name="content">
         <div style="max-width: 1024px; margin: 0 auto;">
             <h:form prependId="false">
+
+                <p:growl id="growl" showDetail="true"/>
+
                 <div class="grid">
-                    <div class="col-12">
+                    <div class="col-12" jsf:id="dvTituloEvaluacion">
                         <p:outputLabel>Lección 1 - Terminos generales</p:outputLabel>
+                        <p:outputLabel style="float: right;">Pregunta #{practiceView.idStep} / #{practiceView.totalStep}</p:outputLabel>
                     </div>
                     <div class="col-12">
-                        <p:progressBar id="progressBarClient" widgetVar="pbClient" styleClass="mt-5" value="55" labelTemplate="Prueba de avance {value}%"/>
+                        <p:progressBar id="progressBarClient" widgetVar="pbClient" styleClass="mt-5" value="#{practiceView.avance}" labelTemplate="Porcentaje de avance {value}%"/>
                     </div>
 
-                    <div jsf:id="dvContent" class="grid">
+                    <div jsf:id="dvContent" class="grid" style="margin: 0 auto;">
                         <ui:include src="#{practiceView.step}"/>
                     </div>
 
                     <div class="col-12" style="text-align: left">
-                        <p:commandButton value="Siguiente" 
+                        <p:commandButton id="btnNextStep" value="Iniciar" 
                                          action="#{practiceView.nextStep()}"
-                                         update="dvContent"
+                                         update="dvContent btnNextStep dvTituloEvaluacion"
                                          class="btnNext" icon="pi pi-arrow-right" 
-                                         style="float: right;"/>
+                                         style="float: right; display: #{practiceView.idStep eq 0 ? 'block':'none'}"/>
                     </div>
                 </div>
             </h:form>

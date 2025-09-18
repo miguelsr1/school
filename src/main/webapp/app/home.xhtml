@@ -60,38 +60,19 @@
 
                     <p:tabView activeIndex="#{dashboardEstudianteView.activeIndex}">
                         <p:tab title="En Progreso">
-                            <p:dataGrid var="curso" value="#{dashboardEstudianteView.cursosEnProgreso}" 
+                            <p:dataGrid var="curso" value="#{dashboardEstudianteView.lstAvanceCurso}" 
                                         columns="3" layout="grid" emptyMessage="No tienes cursos en progreso.">
                                 <p:card style="width: 20em; margin-bottom: 2em; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto;">
                                     <f:facet name="header">
                                         <h:graphicImage name="a1.png" library="images" style="width:40%;text-align: center;" />
                                     </f:facet>
-                                    <f:facet name="title">#{curso.nombre}</f:facet>
-                                    <f:facet name="subtitle">#{curso.descripcionCorta}</f:facet>
-                                    <p:progressBar value="#{curso.progreso}" labelTemplate="{value}% Completo" displayOnly="true" styleClass="p-mb-3"/>
+                                    <f:facet name="title">#{curso.nombreCurso}</f:facet>
+                                    <f:facet name="subtitle">#{curso.descripcionCurso}</f:facet>
+                                    <p:progressBar value="#{curso.avance}" labelTemplate="{value}% Completo" displayOnly="true" styleClass="p-mb-3"/>
                                     <f:facet name="footer" class="footer-center" >
                                         <p:button value="Continuar Curso" icon="pi pi-play" style="margin-top: 2rem;"
                                                          outcome="practice/practice.xhtml"
                                                          styleClass="p-button-info p-d-block p-w-100 rounded-button ui-button-outlined" />
-                                    </f:facet>
-                                </p:card>
-                            </p:dataGrid>
-                        </p:tab>
-
-                        <p:tab title="Finalizados">
-                            <p:dataGrid var="curso" value="#{dashboardEstudianteView.cursosFinalizados}"
-                                        columns="3" layout="grid" emptyMessage="No has finalizado ningún curso.">
-                                <p:card style="width: 20em; margin-bottom: 2em; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                                    <f:facet name="header">
-                                        <h:graphicImage url="#{curso.imagenUrl}" style="width:100%; height: 120px; object-fit: cover;" />
-                                    </f:facet>
-                                    <f:facet name="title">#{curso.nombre}</f:facet>
-                                    <f:facet name="subtitle">#{curso.descripcionCorta}</f:facet>
-
-                                    <f:facet name="footer">
-                                        <p:commandButton value="Ver Certificado" icon="pi pi-file-pdf"
-                                                         action="#{dashboardEstudianteView.verCertificado(curso.id)}"
-                                                         styleClass="p-button-secondary p-d-block p-w-100" />
                                     </f:facet>
                                 </p:card>
                             </p:dataGrid>

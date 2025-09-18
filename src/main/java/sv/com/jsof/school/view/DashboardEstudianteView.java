@@ -7,8 +7,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.Getter;
+import sv.com.jsof.school.dto.AvanceCurso;
 import sv.com.jsof.school.dto.CursoDto;
+import sv.com.jsof.school.repository.CursoRepository;
 
 /**
  *
@@ -21,17 +25,27 @@ public class DashboardEstudianteView implements Serializable {
     private List<CursoDto> cursosEnProgreso;
     private List<CursoDto> cursosFinalizados;
     private int activeIndex = 0; // Para el p:tabView
+    
+    
+    @Getter
+    private List<AvanceCurso> lstAvanceCurso;
+
+    @Inject
+    CursoRepository cursoRepository;
+
 
     @PostConstruct
     public void init() {
+        lstAvanceCurso = cursoRepository.getLstCursos();
+        
         // Simulación de datos para demostración
-        cursosEnProgreso = new ArrayList<>();
+        /*cursosEnProgreso = new ArrayList<>();
         cursosEnProgreso.add(new CursoDto(1L, "Introducción a Java", "Aprende los fundamentos de Java.", 60, "https://via.placeholder.com/300x150/FF5733/FFFFFF?text=Java"));
         cursosEnProgreso.add(new CursoDto(2L, "Desarrollo Web con JSF", "Aprende Jakarta Faces y PrimeFaces.", 25, "https://via.placeholder.com/300x150/3366FF/FFFFFF?text=JSF"));
         cursosEnProgreso.add(new CursoDto(3L, "Bases de Datos SQL", "Modelo y Consulta de Datos.", 90, "https://via.placeholder.com/300x150/33CC33/FFFFFF?text=SQL"));
 
         cursosFinalizados = new ArrayList<>();
-        cursosFinalizados.add(new CursoDto(4L, "Fundamentos de HTML/CSS", "Crea páginas web estáticas.", 100, "https://via.placeholder.com/300x150/FFCC00/000000?text=HTML/CSS"));
+        cursosFinalizados.add(new CursoDto(4L, "Fundamentos de HTML/CSS", "Crea páginas web estáticas.", 100, "https://via.placeholder.com/300x150/FFCC00/000000?text=HTML/CSS"));*/
     }
 
     // --- Métodos de Acción ---

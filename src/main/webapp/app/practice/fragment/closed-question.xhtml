@@ -6,26 +6,33 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
-    <div class="col-12" style="text-align: center">
-        <p:outputLabel class="text-5xl">¿Cómo se dice "hola" en inglés?</p:outputLabel>
-    </div>
-    <div class="col-12 mb-5" style="text-align: left">
-        <p:outputLabel class="text-xl text-600">Escoge la respuesta correcta</p:outputLabel>
+
+    <div class="col-12 mt-3" style="text-align: center">
+        <p:outputLabel class="text-5xl">#{closedQuestionView.question}</p:outputLabel>
     </div>
     <div class="col-12">
-        <div class="container-match grid">
-            <div class="col-12 md:col-6 mb-2" style="text-align: center">
-                <p:commandButton value="Respuesta 1" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
-            </div>
-            <div class="col-12 md:col-6 mb-2" style="text-align: center">
-                <p:commandButton value="Respuesta 2" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
-            </div>
-            <div class="col-12 md:col-6 mb-2" style="text-align: center">
-                <p:commandButton value="Respuesta 3" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
-            </div>
-            <div class="col-12 md:col-6 mb-2" style="text-align: center">
-                <p:commandButton value="Respuesta 4" styleClass="ui-button-outlined ui-button-secondary buttonV3"/>
+        <div class="container-match" >
+            <div jsf:id="dvClosedQuestion" class="grid">
+                <ui:repeat value="#{closedQuestionView.opciones}" var="opcion">
+                    <div class="col-12 md:col-6 mb-2" style="text-align: center">
+                        <p:commandButton 
+                            style="width: 10rem; height: 4rem"
+                            value="#{opcion.palabra}" 
+                            action="#{closedQuestionView.seleccionarRespuesta(opcion)}"
+                            update="dvClosedQuestion growl btnNext"
+                            styleClass="rounded-button ui-button-outlined boton-opcion #{closedQuestionView.respuestaSeleccionada and opcion.correcta ? 'correcta' : ''} #{closedQuestionView.respuestaSeleccionada and not opcion.correcta ? 'incorrecta' : ''}" />
+                    </div>
+                </ui:repeat>
             </div>
         </div>
+    </div>
+
+    <div class="col-12" style="text-align: left">
+        <p:commandButton id="btnNext" value="Siguiente" 
+                         disabled="#{not closedQuestionView.respuestaCorrecta}"
+                         action="#{closedQuestionView.siguiente()}"
+                         update="dvContent growl dvTituloEvaluacion"
+                         class="btnNext" icon="pi pi-arrow-right" 
+                         style="float: right;"/>
     </div>
 </ui:composition>

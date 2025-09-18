@@ -6,14 +6,31 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.Getter;
+import sv.com.jsof.school.db.dto.ParDto;
+import sv.com.jsof.school.repository.CursoRepository;
+import sv.com.jsof.school.view.practice.PracticeView;
+import sv.com.jsof.school.view.practice.Pregunta;
 
 @Named
 @ViewScoped
-public class DuolingoBean implements Serializable {
+public class MatchView implements Serializable, Pregunta {
 
     private static final long serialVersionUID = 1L;
+
+    @Inject
+    PracticeView practiceView;
+    @Inject
+    CursoRepository cursoRepository;
+
+    @Getter
+    private boolean finalizado = false;
 
     private Map<String, String> parejasOriginales; // Mapa para almacenar las parejas correctas
     private List<String> palabrasIzquierda; // Palabras a mostrar en la columna izquierda
@@ -26,20 +43,29 @@ public class DuolingoBean implements Serializable {
     private List<String> parejasEncontradasDerecha; // Para deshabilitar botones de parejas encontradas
 
     private String mensaje; // Mensajes para el usuario
+    private int numeroIntentos = 0;
 
-    public DuolingoBean() {
+    private List<ParDto> lstPar;
+
+    @PostConstruct
+    public void duolingoBean() {
         inicializarJuego();
     }
 
     public void inicializarJuego() {
+        lstPar = cursoRepository.getLstPar(practiceView.getCurrent().getIdPregunta());
+
         parejasOriginales = new HashMap<>();
-        parejasOriginales.put("mesa", "table");
+
+        parejasOriginales = lstPar.stream()
+                .collect(Collectors.toMap(ParDto::getElementoIzquierdo, ParDto::getElementoDerecho));
+
+        /*parejasOriginales.put("mesa", "table");
         parejasOriginales.put("libro", "book");
         parejasOriginales.put("agua", "water");
         parejasOriginales.put("perro", "dog");
         parejasOriginales.put("gato", "cat");
-        parejasOriginales.put("sol", "sun");
-
+        parejasOriginales.put("sol", "sun");*/
         palabrasIzquierda = new ArrayList<>(parejasOriginales.keySet());
         palabrasDerecha = new ArrayList<>(parejasOriginales.values());
         Collections.shuffle(palabrasDerecha); // Desordenar la columna derecha
@@ -70,18 +96,19 @@ public class DuolingoBean implements Serializable {
         if (seleccionIzquierda != null && seleccionDerecha != null) {
             String palabraEsperada = parejasOriginales.get(seleccionIzquierda);
             if (palabraEsperada != null && palabraEsperada.equals(seleccionDerecha)) {
-                mensaje = "¡Correcto! Has encontrado una pareja.";
                 parejasEncontradasIzquierda.add(seleccionIzquierda);
                 parejasEncontradasDerecha.add(seleccionDerecha);
             } else {
-                mensaje = "Incorrecto. Intenta de nuevo.";
+                numeroIntentos++;
+                mensaje = "<span style='color:red'>Intentos fallidos: " + numeroIntentos + "</span>";
             }
             // Reiniciar selecciones para la siguiente ronda
             seleccionIzquierda = null;
             seleccionDerecha = null;
 
             if (parejasEncontradasIzquierda.size() == palabrasIzquierda.size()) {
-                mensaje += " ¡Felicidades, has encontrado todas las parejas!";
+                mensaje = " ¡Felicidades, has encontrado todas las parejas! </br><span style='color:red'>Intentos fallidos: " + numeroIntentos + "</span>";
+                finalizado = true;
             }
         }
     }
@@ -133,5 +160,14 @@ public class DuolingoBean implements Serializable {
 
     public boolean isBotonDerechaDeshabilitado(String palabra) {
         return parejasEncontradasDerecha.contains(palabra);
+    }
+
+    @Override
+    public void siguiente() {
+        if (parejasEncontradasIzquierda.size() != palabrasIzquierda.size()) {
+            practiceView.showMessage(FacesMessage.SEVERITY_WARN, "INFORMACIÓN", "DEBE DE ENCONTRAR TODAS LAS PAREJAS PARA CONTINUAR");
+            return;
+        }
+        practiceView.nextStep();
     }
 }
